@@ -1,119 +1,40 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Générateur d'excuses drôles et sérieuses pour toutes les situations.">
-  <title>Générateur d'Excuses</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      background-color: #f9f9f9;
-    }
-    header {
-      background-color: #6200ea;
-      color: white;
-      padding: 15px 0;
-      margin-bottom: 20px;
-    }
-    main {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    #content {
-      margin-top: 20px;
-      margin-bottom: 20px;
-      padding: 10px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    textarea {
-      width: 100%;
-      height: 100px;
-      margin-bottom: 20px;
-    }
-    button {
-      background-color: #6200ea;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    button:hover {
-      background-color: #3700b3;
-    }
-    .output {
-      margin-top: 20px;
-      font-size: 18px;
-    }
-    footer {
-      background-color: #6200ea;
-      color: white;
-      padding: 10px 0;
-      margin-top: 20px;
-    }
-    .ad-container {
-      margin: 20px 0;
-    }
-  </style>
-  <!-- Google Ads script -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2243839346258408"
-     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur d'Excuses</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Générateur d'Excuses</h1>
-  </header>
+    <header>
+        <h1>Générateur d'Excuses</h1>
+    </header>
+    <main>
+        <section class="form-section">
+            <label for="userInput">Entrez une situation :</label>
+            <textarea id="userInput" placeholder="Décrivez votre situation ici..."></textarea>
 
-  <!-- Bannière publicitaire en haut -->
-  <div class="ad-container">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-2243839346258408"
-         data-ad-slot="1234567890"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
+            <div class="mode-selector">
+                <input type="radio" id="mode-fun" name="mode" value="FUN" checked>
+                <label for="mode-fun">Drôle</label>
 
-  <main>
-    <div id="content">
-      <h2>Créez votre excuse parfaite</h2>
-      <textarea id="user-input" placeholder="Décrivez votre situation..."></textarea>
-      <br>
-      <button id="mode-toggle">Mode : Sérieux</button>
-      <br>
-      <button id="generate-button">Générer une excuse</button>
-      <p class="output" id="response-output"></p>
-    </div>
-  </main>
+                <input type="radio" id="mode-serious" name="mode" value="SERIOUS">
+                <label for="mode-serious">Sérieux</label>
+            </div>
 
-  <!-- Bannière publicitaire en bas -->
-  <div class="ad-container">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-2243839346258408"
-         data-ad-slot="1122334455"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
+            <button id="generateExcuse">Générer une excuse</button>
+        </section>
 
-  <footer>
-    <p>&copy; 2024 Générateur d'Excuses. Tous droits réservés.</p>
-    <p><a href="mentions-legales.html">Mentions légales</a></p>
-  </footer>
-  
+        <section class="result-section">
+            <h2>Votre excuse :</h2>
+            <p id="excuseOutput">...</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Générateur d'Excuses. Tous droits réservés.</p>
+        <a href="mentions-legales.html">Mentions légales</a>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
