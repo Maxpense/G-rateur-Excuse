@@ -7,55 +7,46 @@ const { OpenAI } = require('openai');
 dotenv.config();
 
 const app = express();
-app.use(cors({ origin: '*' })); // Autorise toutes les origines
-app.use(express.json()); // Middleware pour gérer les JSON
+app.use(cors());
+app.use(express.json());
 
 // Configuration OpenAI
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // Charge la clé API depuis les variables d'environnement
+    apiKey: process.env.OPENAI_API_KEY,
 });
 
 // Route pour générer une excuse
 app.post('/generate-excuse', async (req, res) => {
-  const { userInput, mode } = req.body;
+    const { userInput, mode } = req.body;
 
-  try {
-    // Prompt adapté en fonction du mode
-    const prompt = mode === 'FUN'
-      ? `En tant qu'expert en excuses créatives et humoristiques, génère une excuse drôle et loufoque pour la situation suivante : "${userInput}". 
-         L'excuse doit respecter les critères suivants :
-         - Être extrêmement créative et unique
-         - Contenir une pointe d'absurdité tout en restant compréhensible
-         - Apporter une touche d'humour universel qui ne dépend pas de références spécifiques
-         - Tenir en **une seule phrase** concise mais percutante.`
-      : `En tant que conseiller professionnel, génère une excuse crédible et appropriée pour la situation suivante : "${userInput}". 
-         L'excuse doit respecter les critères suivants :
-         - Être formulée de manière professionnelle et respectueuse
-         - Être réaliste et adaptée à un contexte sérieux
-         - Apporter une solution diplomatique pour préserver les relations
-         - Tenir en **une seule phrase**, polie et bien structurée.`;
+    if (!userInput || !mode) {
+        return res.status(400).json({ error: 'Entrée utilisateur ou mode manquant.' });
+    }
 
-    // Appel à l'API OpenAI
-    const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        { role: 'system', content: 'Tu es un expert en excuses, capable de générer des réponses adaptées à chaque contexte.' },
-        { role: 'user', content: prompt },
-      ],
-      max_tokens: 70,
-    });
+    try {
+        const prompt = mode === 'FUN'
+            ? `Génère une excuse drôle et unique pour : "${userInput}".`
+            : `Génère une excuse sérieuse et professionnelle pour : "${userInput}".`;
 
-    // Récupérer et renvoyer l'excuse générée
-    const excuse = response.choices[0].message.content.trim();
-    res.json({ excuse });
-  } catch (error) {
-    console.error('Erreur complète :', error.response ? error.response.data : error.message);
-    res.status(500).json({ error: 'Erreur avec l\'API OpenAI.' });
-  }
+        const response = await openai.chat.completions.create({
+            model: 'gpt-3.5-turbo',
+            messages: [
+                { role: 'system', content: 'Tu es un expert en excuses créatives et professionnelles.' },
+                { role: 'user', content: prompt },
+            ],
+            max_tokens: 50,
+        });
+
+        const excuse = response.choices[0].message.content.trim();
+        res.json({ excuse });
+    } catch (error) {
+        console.error('Erreur OpenAI :', error.response ? error.response.data : error.message);
+        res.status(500).json({ error: 'Erreur avec l\'API OpenAI.' });
+    }
 });
 
 // Démarrer le serveur
-const PORT = process.env.PORT || 3000; // Utilise le port de Render ou 3000 en local
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Serveur actif sur http://localhost:${PORT}`);
+    console.log(`Serveur actif sur http://localhost:${PORT}`);
 });

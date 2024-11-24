@@ -11,28 +11,14 @@
         <h1>Générateur d'Excuses</h1>
     </header>
     <main>
-        <section class="form-section">
-            <label for="userInput">Entrez une situation :</label>
-            <textarea id="userInput" placeholder="Décrivez votre situation ici..."></textarea>
-
-            <div class="mode-selector">
-                <input type="radio" id="mode-fun" name="mode" value="FUN" checked>
-                <label for="mode-fun">Drôle</label>
-
-                <input type="radio" id="mode-serious" name="mode" value="SERIOUS">
-                <label for="mode-serious">Sérieux</label>
-            </div>
-
-            <button id="generateExcuse">Générer une excuse</button>
-        </section>
-
-        <section class="result-section">
-            <h2>Votre excuse :</h2>
-            <p id="excuseOutput">...</p>
+        <section id="container">
+            <textarea id="user-input" placeholder="Décrivez votre situation ici..."></textarea>
+            <button id="generate-button">Générer une excuse</button>
+            <p id="response-output">...</p>
         </section>
     </main>
     <footer>
-        <p>&copy; 2024 Générateur d'Excuses. Tous droits réservés.</p>
+        <p>&copy; 2024 Générateur d'Excuses</p>
         <a href="mentions-legales.html">Mentions légales</a>
     </footer>
     <script src="script.js"></script>
