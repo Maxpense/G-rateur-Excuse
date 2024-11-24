@@ -3,11 +3,12 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const { OpenAI } = require('openai');
 
+// Charger les variables d'environnement
 dotenv.config();
 
 const app = express();
 app.use(cors({ origin: '*' })); // Autorise toutes les origines
-app.use(express.json()); // Remplace body-parser
+app.use(express.json()); // Middleware pour gérer les JSON
 
 // Configuration OpenAI
 const openai = new OpenAI({
@@ -19,21 +20,32 @@ app.post('/generate-excuse', async (req, res) => {
   const { userInput, mode } = req.body;
 
   try {
-    const prompt =
-      mode === 'FUN'
-        ? `Génère une excuse drôle et concise pour : "${userInput}". Réponse en une seule phrase.`
-        : `Génère une excuse sérieuse et concise pour : "${userInput}". Réponse en une seule phrase.`;
+    // Prompt adapté en fonction du mode
+    const prompt = mode === 'FUN'
+      ? `En tant qu'expert en excuses créatives et humoristiques, génère une excuse drôle et loufoque pour la situation suivante : "${userInput}". 
+         L'excuse doit respecter les critères suivants :
+         - Être extrêmement créative et unique
+         - Contenir une pointe d'absurdité tout en restant compréhensible
+         - Apporter une touche d'humour universel qui ne dépend pas de références spécifiques
+         - Tenir en **une seule phrase** concise mais percutante.`
+      : `En tant que conseiller professionnel, génère une excuse crédible et appropriée pour la situation suivante : "${userInput}". 
+         L'excuse doit respecter les critères suivants :
+         - Être formulée de manière professionnelle et respectueuse
+         - Être réaliste et adaptée à un contexte sérieux
+         - Apporter une solution diplomatique pour préserver les relations
+         - Tenir en **une seule phrase**, polie et bien structurée.`;
 
-    // Appelle l'API OpenAI
+    // Appel à l'API OpenAI
     const response = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
-        { role: 'system', content: 'Tu es un générateur d\'excuses.' },
+        { role: 'system', content: 'Tu es un expert en excuses, capable de générer des réponses adaptées à chaque contexte.' },
         { role: 'user', content: prompt },
       ],
       max_tokens: 70,
     });
 
+    // Récupérer et renvoyer l'excuse générée
     const excuse = response.choices[0].message.content.trim();
     res.json({ excuse });
   } catch (error) {
