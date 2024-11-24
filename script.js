@@ -23,7 +23,7 @@ generateButton.addEventListener("click", async () => {
   responseOutput.textContent = "Génération en cours...";
 
   try {
-    const response = await fetch("http://localhost:3000/generate-excuse", {
+    const response = await fetch("https://g-rateur-excuse.onrender.com/generate-excuse", { // Remplace par ton URL Render
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userInput, mode }),
